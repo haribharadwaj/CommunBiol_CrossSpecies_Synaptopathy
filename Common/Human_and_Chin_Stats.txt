@@ -1,0 +1,208 @@
+
+
+Load libraries
+==============
+library(lme4)
+library(pbkrtest)
+
+#########
+MEMR DATA
+#########
+
+dat <- read.csv('Human_Synaptopathy__MEMRdata.csv', header=TRUE)
+dat$Level <- as.ordered(dat$Level)
+
+
+MEMR Highpass:
+==============
+
+Control vs. MA (Using Audiogram)
+++++++++++++++++++++++++++++++++
+m0 <- lmer(MEMRHP ~ Gender + LFA + HFA + EHFA + Level + (1|ID), data=dat[dat$Group != 'nexp',])
+m <- lmer(MEMRHP ~ Gender + LFA + HFA + EHFA + Group*Level + (1|ID), data=dat[dat$Group != 'nexp',])
+KRmodcomp(m, m0)
+F-test with Kenward-Roger approximation; computing time: 0.10 sec.
+large : MEMRHP ~ Gender + LFA + HFA + EHFA + Group * Level + (1 | ID)
+small : MEMRHP ~ Gender + LFA + HFA + EHFA + Level + (1 | ID)
+         stat     ndf     ddf F.scaling   p.value    
+Ftest   8.572  10.000 939.327   0.99845 1.714e-13 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+
+Control vs. NExp (Using Audiogram)
+++++++++++++++++++++++++++++++++++
+m <- lmer(MEMRHP ~ Gender + LFA + HFA + EHFA + Group*Level + (1|ID), data=dat[dat$Group != 'ma',])
+m0 <- lmer(MEMRHP ~ Gender + LFA + HFA + EHFA + Level + (1|ID), data=dat[dat$Group != 'ma',])
+KRmodcomp(m, m0)
+F-test with Kenward-Roger approximation; computing time: 0.10 sec.
+large : MEMRHP ~ Gender + LFA + HFA + EHFA + Group * Level + (1 | ID)
+small : MEMRHP ~ Gender + LFA + HFA + EHFA + Level + (1 | ID)
+          stat      ndf      ddf F.scaling   p.value    
+Ftest   3.7053  10.0000 896.4578   0.99838 6.989e-05 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+
+Control vs. MA (Using DP)
++++++++++++++++++++++++++
+m0 <- lmer(MEMRHP ~ Gender + DPhfa + DPehfa + Level + (1|ID), data=dat[dat$Group !='nexp',])
+m <- lmer(MEMRHP ~ Gender + DPhfa + DPehfa + Group*Level + (1|ID), data=dat[dat$Group !='nexp',])
+KRmodcomp(m, m0)
+F-test with Kenward-Roger approximation; computing time: 0.10 sec.
+large : MEMRHP ~ Gender + DPhfa + DPehfa + Group * Level + (1 | ID)
+small : MEMRHP ~ Gender + DPhfa + DPehfa + Level + (1 | ID)
+          stat      ndf      ddf F.scaling   p.value    
+Ftest   8.9083  10.0000 941.2708   0.99847 4.207e-14 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+
+Control vs. NExp (Using DP)
++++++++++++++++++++++++++++
+m <- lmer(MEMRHP ~ Gender + DPhfa + DPehfa + Group*Level + (1|ID), data=dat[dat$Group !='ma',])
+m0 <- lmer(MEMRHP ~ Gender + DPhfa + DPehfa + Level + (1|ID), data=dat[dat$Group !='ma',])
+KRmodcomp(m, m0)
+F-test with Kenward-Roger approximation; computing time: 0.09 sec.
+large : MEMRHP ~ Gender + DPhfa + DPehfa + Group * Level + (1 | ID)
+small : MEMRHP ~ Gender + DPhfa + DPehfa + Level + (1 | ID)
+          stat      ndf      ddf F.scaling   p.value    
+Ftest   3.8373  10.0000 898.4065   0.99839 4.208e-05 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+
+MEMR Broadband:
+===============
+
+Control vs. NExp (Using Audiogram)
+++++++++++++++++++++++++++++++++++
+m <- lmer(MEMRBB ~ Gender + LFA + HFA + EHFA + Group*Level + (1|ID), data=dat[dat$Group != 'ma',])
+m0 <- lmer(MEMRBB ~ Gender + LFA + HFA + EHFA + Level + (1|ID), data=dat[dat$Group != 'ma',])
+KRmodcomp(m, m0)
+F-test with Kenward-Roger approximation; computing time: 0.09 sec.
+large : MEMRBB ~ Gender + LFA + HFA + EHFA + Group * Level + (1 | ID)
+small : MEMRBB ~ Gender + LFA + HFA + EHFA + Level + (1 | ID)
+          stat      ndf      ddf F.scaling p.value
+Ftest   0.9183  10.0000 896.4578   0.99838  0.5154
+
+
+Control vs. MA (Using Audiogram)
+++++++++++++++++++++++++++++++++
+m <- lmer(MEMRBB ~ Gender + LFA + HFA + EHFA + Group*Level + (1|ID), data=dat[dat$Group != 'nexp',])
+m0 <- lmer(MEMRBB ~ Gender + LFA + HFA + EHFA + Level + (1|ID), data=dat[dat$Group != 'nexp',])
+KRmodcomp(m, m0)
+F-test with Kenward-Roger approximation; computing time: 0.10 sec.
+large : MEMRBB ~ Gender + LFA + HFA + EHFA + Group * Level + (1 | ID)
+small : MEMRBB ~ Gender + LFA + HFA + EHFA + Level + (1 | ID)
+          stat      ndf      ddf F.scaling  p.value   
+Ftest   2.7058  10.0000 939.3274   0.99845 0.002812 **
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+
+Control vs. NExp (Using DP)
++++++++++++++++++++++++++++
+m0 <- lmer(MEMRBB ~ Gender + DPhfa + DPehfa + Level + (1|ID), data=dat[dat$Group !='ma',])
+> m <- lmer(MEMRBB ~ Gender + DPhfa + DPehfa + Group*Level + (1|ID), data=dat[dat$Group !='ma',])
+> KRmodcomp(m, m0)
+F-test with Kenward-Roger approximation; computing time: 0.08 sec.
+large : MEMRBB ~ Gender + DPhfa + DPehfa + Group * Level + (1 | ID)
+small : MEMRBB ~ Gender + DPhfa + DPehfa + Level + (1 | ID)
+          stat      ndf      ddf F.scaling p.value
+Ftest   0.9004  10.0000 898.4065   0.99839  0.5322
+
+
+Control vs. MA (Using DP)
++++++++++++++++++++++++++
+m <- lmer(MEMRBB ~ Gender + DPhfa + DPehfa + Group*Level + (1|ID), data=dat[dat$Group !='nexp',])
+m0 <- lmer(MEMRBB ~ Gender + DPhfa + DPehfa + Level + (1|ID), data=dat[dat$Group !='nexp',])
+KRmodcomp(m, m0)
+F-test with Kenward-Roger approximation; computing time: 0.10 sec.
+large : MEMRBB ~ Gender + DPhfa + DPehfa + Group * Level + (1 | ID)
+small : MEMRBB ~ Gender + DPhfa + DPehfa + Level + (1 | ID)
+          stat      ndf      ddf F.scaling  p.value   
+Ftest   2.7985  10.0000 941.2708   0.99847 0.002021 **
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+
+
+CHINCHILLA Pre vs. 2-Week-Post TTS
+++++++++++++++++++++++++++++++++++
+dat <- read.csv('chinMEMR_fit.csv', header=TRUE)
+dat$Level <- as.ordered(dat$Level)
+
+m <- lmer(MEMR ~ Level*TimePoint + (1|ID), data=dat[dat$TimePoint !='1dy',])
+m0 <- lmer(MEMR ~ Level + (1|ID), data=dat[dat$TimePoint !='1dy',])
+KRmodcomp(m, m0)
+F-test with Kenward-Roger approximation; computing time: 0.10 sec.
+large : MEMR ~ Level * TimePoint + (1 | ID)
+small : MEMR ~ Level + (1 | ID)
+          stat      ndf      ddf F.scaling   p.value    
+Ftest   6.7422  11.0000 120.1087         1 1.004e-08 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+
+
+
+########
+ABR data
+########
+
+# Note: Better to fit model with both groups rather than two separate models for YExp and MA
+# This is possible because it's a simple LM (not LMER) and we can use T-scores with one-sided tests
+# Residual DF = 155
+
+dat <- read.csv('Human_Synaptopathy__ABRdata.csv', header=TRUE)
+
+
+
+Control vs. NExp (Using Audiogram)
+++++++++++++++++++++++++++++++++++
+m <- lm(IVrat ~ Gender + LFA + HFA + EHFA + Group, data=dat)
+Coefficients:
+              Estimate Std. Error t value Pr(<t)    
+Groupnexp   -0.1661241  0.0878791  -1.890 0.030283 *
+
+Control vs. MA (Using Audiogram)
+++++++++++++++++++++++++++++++++
+m <- lm(IVrat ~ Gender + LFA + HFA + EHFA + Group, data=dat)
+Coefficients:
+              Estimate Std. Error t value Pr(<t) 
+Groupma     -0.5221006  0.1376066  -3.794 0.000106 ***
+
+
+
+Control vs. NExp (Using DPOAE)
+++++++++++++++++++++++++++++++
+m <- lm(IVrat ~ Gender + DPhfa + DPehfa + Group, data=dat)
+Coefficients:
+              Estimate Std. Error t value Pr(<t) 
+Groupnexp   -0.153917   0.088935  -1.731   0.04725 *
+
+
+Control vs. MA (Using DPOAE)
+++++++++++++++++++++++++++++
+m <- lm(IVrat ~ Gender + DPhfa + DPehfa + Group, data=dat)
+Coefficients:
+              Estimate Std. Error t value Pr(<t) 
+Groupma     -0.543108   0.090153  -6.024 5.09e-09 ***
+
+
+CHINCHILLA ABR Wave I/V Ratio Pre vs. 2-week-post TTS
++++++++++++++++++++++++++++++++++++++++++++++++++++++
+dat <- read.csv('chinABR_HighLevel_uV_4k_8k_ave.csv', header=TRUE)
+dat$IVrat <- (dat$W1 / dat$W5)
+
+m <- lmer(IVrat ~ TimePoint + (1|ID), data=dat)
+m0 <- lmer(IVrat ~  (1|ID), data=dat)
+KRmodcomp(m, m0)
+F-test with Kenward-Roger approximation; computing time: 0.02 sec.
+large : IVrat ~ TimePoint + (1 | ID)
+small : IVrat ~ (1 | ID)
+       stat   ndf   ddf F.scaling p.value
+Ftest 1.548 1.000 6.000         1  0.2598
+
+
