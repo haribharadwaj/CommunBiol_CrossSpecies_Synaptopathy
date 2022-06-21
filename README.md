@@ -1,3 +1,7 @@
+
+[![DOI](https://zenodo.org/badge/505630380.svg)](https://zenodo.org/badge/latestdoi/505630380)
+
+
 # Cross-species Study on Cochlear Synaptopathy with "Normal" Audiograms
 
 This repository contains data files associated with the manuscript titled **Cross-Species Experiments Reveal Widespread Cochlear Neural Damage in Normal Hearing** submitted to  [Communications Biology](https://www.nature.com/commsbio/). An early pre-print of the manuscript can be found on [BioRxiv: 2021.03.17.435900 (doi: 10.1101/2021.03.17.435900)](https://www.biorxiv.org/content/10.1101/2021.03.17.435900v1).
